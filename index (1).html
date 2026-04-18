@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TimeZone — Luxury Watches</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dark: #A07830;
+    --black: #080808;
+    --dark: #0F0F0F;
+    --dark2: #161616;
+    --dark3: #1E1E1E;
+    --dark4: #272727;
+    --text: #F0EDE6;
+    --text-muted: #9A9080;
+    --text-dim: #5A5248;
+    --border: rgba(201,168,76,0.15);
+    --border-hover: rgba(201,168,76,0.45);
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans: 'Montserrat', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--text); font-family: var(--font-serif); min-height: 100vh; overflow-x: hidden; }
+  ::selection { background: var(--gold); color: var(--black); }
+  ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: var(--black); } ::-webkit-scrollbar-thumb { background: var(--gold-dark); }
+
+  /* NAV */
+  nav { background: rgba(8,8,8,0.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 56px; display: flex; align-items: center; justify-content: space-between; height: 76px; position: sticky; top: 0; z-index: 100; }
+  .logo { font-family: var(--font-serif); font-size: 28px; font-weight: 600; letter-spacing: 6px; color: var(--gold); text-transform: uppercase; cursor: pointer; user-select: none; }
+  .logo span { color: var(--text); font-weight: 300; }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a { color: var(--text-muted); text-decoration: none; font-family: var(--font-sans); font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 500; transition: color 0.3s; cursor: pointer; }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .icon-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; transition: color 0.3s; position: relative; padding: 4px; }
+  .icon-btn:hover { color: var(--gold); }
+  .cart-count { position: absolute; top: -4px; right: -6px; background: var(--gold); color: var(--black); font-size: 9px; font-weight: 700; width: 17px; height: 17px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-sans); }
+  .btn-outline { background: none; border: 1px solid var(--border-hover); color: var(--gold); padding: 9px 22px; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; cursor: pointer; font-family: var(--font-sans); font-weight: 600; transition: all 0.3s; }
+  .btn-outline:hover { background: rgba(201,168,76,0.08); }
+  .btn-gold { background: var(--gold); border: 1px solid var(--gold); color: var(--black); padding: 9px 22px; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; cursor: pointer; font-family: var(--font-sans); font-weight: 700; transition: all 0.3s; }
+  .btn-gold:hover { background: var(--gold-light); }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* HERO */
+  .hero { min-height: 92vh; background: var(--black); display: flex; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .hero-rings { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; }
+  .hero-ring { position: absolute; border-radius: 50%; border: 1px solid rgba(201,168,76,0.07); transform: translate(-50%,-50%); }
+  .hero-content { position: relative; z-index: 2; max-width: 800px; padding: 0 24px; }
+  .hero-eyebrow { font-family: var(--font-sans); font-size: 10px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; font-weight: 600; margin-bottom: 28px; display: flex; align-items: center; justify-content: center; gap: 16px; }
+  .hero-eyebrow::before, .hero-eyebrow::after { content: ''; display: block; width: 40px; height: 1px; background: var(--gold); opacity: 0.5; }
+  .hero-watch-icon { font-size: 96px; margin-bottom: 20px; display: block; filter: drop-shadow(0 0 48px rgba(201,168,76,0.25)); animation: float 4s ease-in-out infinite; }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+  .hero h1 { font-size: 80px; font-weight: 300; line-height: 1.05; margin-bottom: 16px; letter-spacing: 2px; }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub { font-family: var(--font-sans); font-size: 13px; color: var(--text-muted); letter-spacing: 2px; margin-bottom: 52px; font-weight: 300; }
+  .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn-hero-primary { background: var(--gold); color: var(--black); border: none; padding: 18px 52px; font-family: var(--font-sans); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+  .btn-hero-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-hero-secondary { background: none; color: var(--text); border: 1px solid rgba(240,237,230,0.18); padding: 18px 52px; font-family: var(--font-sans); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; font-weight: 500; cursor: pointer; transition: all 0.3s; }
+  .btn-hero-secondary:hover { border-color: var(--gold); color: var(--gold); }
+  .hero-stats { display: flex; gap: 56px; justify-content: center; margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--border); }
+  .stat { text-align: center; }
+  .stat-num { font-size: 32px; font-weight: 300; color: var(--gold); display: block; margin-bottom: 4px; }
+  .stat-label { font-family: var(--font-sans); font-size: 10px; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; }
+
+  /* COLLECTION TABS */
+  .collection-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--dark); overflow-x: auto; }
+  .col-tab { flex: 1; min-width: 120px; padding: 20px 16px; text-align: center; border-right: 1px solid var(--border); cursor: pointer; transition: all 0.3s; }
+  .col-tab:last-child { border-right: none; }
+  .col-tab:hover, .col-tab.active { background: rgba(201,168,76,0.05); }
+  .col-tab .ct-icon { font-size: 24px; margin-bottom: 8px; }
+  .col-tab .ct-name { font-family: var(--font-sans); font-size: 10px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; font-weight: 600; margin-bottom: 3px; }
+  .col-tab .ct-count { font-family: var(--font-sans); font-size: 11px; color: var(--text-dim); }
+
+  /* SECTIONS */
+  .section { padding: 90px 56px; }
+  .section-hd { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 52px; }
+  .section-eyebrow { font-family: var(--font-sans); font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; font-weight: 600; margin-bottom: 10px; }
+  .section-title { font-size: 40px; font-weight: 300; letter-spacing: 1px; }
+  .btn-view-all { background: none; border: none; color: var(--gold); font-family: var(--font-sans); font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 600; cursor: pointer; border-bottom: 1px solid var(--border-hover); padding-bottom: 3px; transition: all 0.3s; }
+  .btn-view-all:hover { color: var(--gold-light); border-color: var(--gold-light); }
+
+  /* PRODUCT GRID */
+  .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .product-card { background: var(--dark2); border: 1px solid var(--border); cursor: pointer; transition: all 0.35s; position: relative; overflow: hidden; }
+  .product-card:hover { border-color: var(--border-hover); transform: translateY(-5px); box-shadow: 0 24px 64px rgba(0,0,0,0.6); }
+  .product-card:hover .card-quick { opacity: 1; transform: translateY(0); }
+  .product-img-wrap { height: 200px; display: flex; align-items: center; justify-content: center; background: var(--dark3); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+  .product-emoji { font-size: 72px; transition: transform 0.4s; filter: drop-shadow(0 4px 16px rgba(201,168,76,0.15)); }
+  .product-card:hover .product-emoji { transform: scale(1.1) rotate(-8deg); }
+  .badge { position: absolute; top: 10px; left: 10px; font-family: var(--font-sans); font-size: 8px; letter-spacing: 2px; padding: 4px 10px; text-transform: uppercase; font-weight: 700; }
+  .badge-sale { background: var(--gold); color: var(--black); }
+  .badge-new { background: transparent; color: var(--gold); border: 1px solid var(--border-hover); }
+  .badge-limited { background: #2a0a0a; color: #e06060; border: 1px solid rgba(224,96,96,0.3); }
+  .badge-bestseller { background: #0a1e10; color: #6dbe8c; border: 1px solid rgba(109,190,140,0.3); }
+  .wish-btn { position: absolute; top: 10px; right: 10px; background: rgba(8,8,8,0.75); border: 1px solid var(--border); color: var(--text-muted); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 13px; transition: all 0.3s; }
+  .wish-btn:hover, .wish-btn.active { color: #e06060; border-color: rgba(224,96,96,0.4); }
+  .card-quick { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(201,168,76,0.93); padding: 11px; text-align: center; opacity: 0; transform: translateY(8px); transition: all 0.3s; }
+  .card-quick button { background: none; border: none; color: var(--black); font-family: var(--font-sans); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; cursor: pointer; width: 100%; }
+  .product-body { padding: 18px 16px; }
+  .p-brand { font-family: var(--font-sans); font-size: 9px; letter-spacing: 2.5px; color: var(--gold); text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
+  .p-name { font-size: 16px; font-weight: 400; margin-bottom: 6px; color: var(--text); letter-spacing: 0.5px; }
+  .p-spec { font-family: var(--font-sans); font-size: 10px; color: var(--text-dim); margin-bottom: 14px; line-height: 1.7; letter-spacing: 0.5px; }
+  .p-foot { display: flex; align-items: center; justify-content: space-between; }
+  .p-price { font-size: 19px; color: var(--gold); font-weight: 300; letter-spacing: 1px; }
+  .p-orig { font-family: var(--font-sans); font-size: 11px; color: var(--text-dim); text-decoration: line-through; margin-left: 6px; }
+  .stars { color: var(--gold); font-size: 10px; letter-spacing: 2px; }
+
+  /* PRODUCT MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 999; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.open { display: flex; }
+  .modal-box { background: var(--dark2); border: 1px solid var(--border-hover); max-width: 960px; width: 100%; max-height: 92vh; overflow-y: auto; display: flex; position: relative; }
+  .m-close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: var(--text-muted); font-size: 22px; cursor: pointer; z-index: 10; transition: color 0.3s; line-height: 1; }
+  .m-close:hover { color: var(--gold); }
+  .modal-img { width: 44%; min-height: 420px; background: var(--dark3); display: flex; align-items: center; justify-content: center; font-size: 110px; border-right: 1px solid var(--border); flex-shrink: 0; }
+  .modal-body { padding: 44px 40px; flex: 1; }
+  .m-brand { font-family: var(--font-sans); font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+  .m-name { font-size: 30px; font-weight: 300; margin-bottom: 18px; line-height: 1.2; }
+  .m-price { font-size: 34px; color: var(--gold); margin-bottom: 6px; font-weight: 300; }
+  .m-orig { font-family: var(--font-sans); font-size: 14px; color: var(--text-dim); text-decoration: line-through; margin-bottom: 20px; display: block; }
+  .m-desc { font-family: var(--font-sans); font-size: 13px; color: var(--text-muted); line-height: 1.85; margin-bottom: 28px; font-weight: 300; }
+  .m-specs { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 18px 0; margin-bottom: 28px; }
+  .spec-row { display: flex; justify-content: space-between; padding: 7px 0; font-family: var(--font-sans); font-size: 12px; }
+  .spec-label { color: var(--text-dim); letter-spacing: 0.5px; }
+  .spec-val { color: var(--text); font-weight: 500; }
+  .m-actions { display: flex; gap: 12px; }
+  .btn-add { background: var(--gold); color: var(--black); border: none; padding: 15px 36px; font-family: var(--font-sans); font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700; cursor: pointer; flex: 1; transition: all 0.3s; }
+  .btn-add:hover { background: var(--gold-light); }
+  .btn-wish-modal { background: none; border: 1px solid var(--border-hover); color: var(--gold); padding: 15px 18px; cursor: pointer; font-size: 18px; transition: all 0.3s; }
+  .btn-wish-modal:hover { background: rgba(201,168,76,0.08); }
+
+  /* CART */
+  .cart-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 198; }
+  .cart-overlay.open { display: block; }
+  .cart-panel { position: fixed; right: 0; top: 0; bottom: 0; width: 440px; background: var(--dark); border-left: 1px solid var(--border-hover); z-index: 199; transform: translateX(100%); transition: transform 0.38s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; }
+  .cart-panel.open { transform: translateX(0); }
+  .cart-hd { padding: 28px 28px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .cart-hd h3 { font-size: 20px; font-weight: 300; letter-spacing: 2px; }
+  .cart-x { background: none; border: none; color: var(--text-muted); font-size: 22px; cursor: pointer; line-height: 1; transition: color 0.3s; }
+  .cart-x:hover { color: var(--gold); }
+  .cart-body { flex: 1; overflow-y: auto; padding: 16px 28px; }
+  .c-item { display: flex; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--border); }
+  .c-item-img { width: 60px; height: 60px; background: var(--dark3); display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; border: 1px solid var(--border); }
+  .c-item-info { flex: 1; min-width: 0; }
+  .c-item-name { font-size: 14px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .c-item-brand { font-family: var(--font-sans); font-size: 10px; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+  .c-item-qty-row { display: flex; align-items: center; gap: 10px; }
+  .qty-btn { background: var(--dark3); border: 1px solid var(--border); color: var(--text); width: 24px; height: 24px; cursor: pointer; font-size: 14px; line-height: 1; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .qty-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .qty-num { font-family: var(--font-sans); font-size: 13px; min-width: 20px; text-align: center; }
+  .c-item-price { font-size: 15px; color: var(--gold); font-weight: 300; white-space: nowrap; }
+  .c-rm { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 16px; transition: color 0.3s; align-self: flex-start; padding: 2px; }
+  .c-rm:hover { color: #e06060; }
+  .cart-ft { padding: 20px 28px 28px; border-top: 1px solid var(--border); }
+  .cart-row { display: flex; justify-content: space-between; font-family: var(--font-sans); font-size: 12px; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 0.5px; }
+  .cart-total-row { display: flex; justify-content: space-between; font-size: 20px; margin: 14px 0 22px; }
+  .cart-total-row span:last-child { color: var(--gold); }
+  .btn-checkout-main { width: 100%; background: var(--gold); color: var(--black); border: none; padding: 16px; font-family: var(--font-sans); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: all 0.3s; margin-bottom: 10px; }
+  .btn-checkout-main:hover { background: var(--gold-light); }
+  .btn-continue { width: 100%; background: none; border: 1px solid var(--border); color: var(--text-muted); padding: 12px; font-family: var(--font-sans); font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
+  .btn-continue:hover { border-color: var(--border-hover); color: var(--text); }
+  .cart-empty { text-align: center; padding: 70px 20px; }
+  .cart-empty-icon { font-size: 52px; margin-bottom: 18px; opacity: 0.5; }
+  .cart-empty p { font-family: var(--font-sans); font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+
+  /* AUTH */
+  .auth-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 999; align-items: center; justify-content: center; }
+  .auth-overlay.open { display: flex; }
+  .auth-box { background: var(--dark2); border: 1px solid var(--border-hover); width: 440px; padding: 52px; position: relative; }
+  .auth-logo-txt { font-family: var(--font-serif); font-size: 26px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; text-align: center; margin-bottom: 6px; font-weight: 600; }
+  .auth-tagline { font-family: var(--font-sans); font-size: 11px; color: var(--text-dim); text-align: center; letter-spacing: 1.5px; margin-bottom: 36px; }
+  .auth-tabs { display: flex; margin-bottom: 30px; border-bottom: 1px solid var(--border); }
+  .a-tab { flex: 1; padding: 12px; background: none; border: none; color: var(--text-muted); font-family: var(--font-sans); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.3s; }
+  .a-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .a-form { display: none; }
+  .a-form.active { display: block; }
+  .fg { margin-bottom: 18px; }
+  .fg label { display: block; font-family: var(--font-sans); font-size: 9px; letter-spacing: 2.5px; color: var(--text-dim); text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+  .fg input { width: 100%; background: var(--dark3); border: 1px solid var(--border); color: var(--text); padding: 13px 16px; font-size: 14px; font-family: var(--font-sans); outline: none; transition: border 0.3s; font-weight: 300; }
+  .fg input:focus { border-color: var(--gold); }
+  .fg input::placeholder { color: var(--text-dim); }
+  .btn-auth-submit { width: 100%; background: var(--gold); color: var(--black); border: none; padding: 15px; font-family: var(--font-sans); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; cursor: pointer; margin-top: 6px; transition: all 0.3s; }
+  .btn-auth-submit:hover { background: var(--gold-light); }
+  .auth-or { text-align: center; margin: 20px 0; position: relative; }
+  .auth-or::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--border); }
+  .auth-or span { background: var(--dark2); padding: 0 14px; position: relative; font-family: var(--font-sans); font-size: 10px; color: var(--text-dim); letter-spacing: 1px; }
+  .auth-social-btns { display: flex; gap: 10px; }
+  .btn-social { flex: 1; background: none; border: 1px solid var(--border); color: var(--text-muted); padding: 12px; font-family: var(--font-sans); font-size: 11px; cursor: pointer; transition: all 0.3s; }
+  .btn-social:hover { border-color: var(--border-hover); color: var(--text); }
+
+  /* FEATURES BAND */
+  .features-band { background: var(--dark); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .features-inner { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .feat { padding: 36px 28px; border-right: 1px solid var(--border); text-align: center; }
+  .feat:last-child { border-right: none; }
+  .feat-icon { font-size: 28px; margin-bottom: 14px; }
+  .feat-title { font-family: var(--font-sans); font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 8px; }
+  .feat-desc { font-family: var(--font-sans); font-size: 12px; color: var(--text-dim); line-height: 1.7; }
+
+  /* BRAND STRIP */
+  .brand-strip { padding: 48px 56px; border-bottom: 1px solid var(--border); text-align: center; }
+  .brand-strip p { font-family: var(--font-sans); font-size: 9px; letter-spacing: 3px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 24px; }
+  .brands { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; align-items: center; }
+  .brand-name { font-family: var(--font-serif); font-size: 18px; font-weight: 300; color: var(--text-dim); letter-spacing: 3px; text-transform: uppercase; transition: color 0.3s; cursor: default; }
+  .brand-name:hover { color: var(--gold); }
+
+  /* TOAST */
+  .toast { position: fixed; bottom: 36px; left: 50%; transform: translateX(-50%) translateY(90px); background: var(--gold); color: var(--black); padding: 14px 32px; font-family: var(--font-sans); font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700; z-index: 9999; transition: transform 0.38s cubic-bezier(.4,0,.2,1); pointer-events: none; white-space: nowrap; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* SHOP FILTERS */
+  .shop-filters { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .filter-select { background: var(--dark2); border: 1px solid var(--border); color: var(--text-muted); padding: 9px 16px; font-family: var(--font-sans); font-size: 11px; outline: none; cursor: pointer; transition: border 0.3s; letter-spacing: 0.5px; }
+  .filter-select:focus { border-color: var(--border-hover); }
+  .filter-select option { background: var(--dark2); }
+  .results-count { font-family: var(--font-sans); font-size: 12px; color: var(--text-dim); margin-left: auto; letter-spacing: 0.5px; }
+
+  /* CHECKOUT */
+  .checkout-wrap { max-width: 940px; margin: 56px auto; padding: 0 28px; }
+  .checkout-back { background: none; border: none; color: var(--gold); cursor: pointer; font-family: var(--font-sans); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 36px; display: flex; align-items: center; gap: 8px; padding: 0; }
+  .checkout-back:hover { color: var(--gold-light); }
+  .checkout-grid { display: grid; grid-template-columns: 1fr 380px; gap: 40px; align-items: start; }
+  .co-section h2 { font-size: 22px; font-weight: 300; margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border); letter-spacing: 1px; }
+  .co-section h2:not(:first-child) { margin-top: 40px; }
+  .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .order-box { background: var(--dark2); border: 1px solid var(--border); padding: 28px; position: sticky; top: 96px; }
+  .order-box h3 { font-family: var(--font-sans); font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 22px; }
+  .order-line { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-family: var(--font-sans); font-size: 12px; }
+  .order-line span:first-child { color: var(--text-muted); max-width: 200px; }
+  .order-line span:last-child { color: var(--text); font-weight: 500; }
+  .order-total-line { display: flex; justify-content: space-between; padding: 16px 0; font-size: 20px; }
+  .order-total-line span:last-child { color: var(--gold); }
+
+  /* FOOTER */
+  footer { background: var(--dark); border-top: 1px solid var(--border); padding: 72px 56px 36px; }
+  .footer-grid { display: grid; grid-template-columns: 2.2fr 1fr 1fr 1fr; gap: 56px; margin-bottom: 56px; }
+  .f-brand { font-family: var(--font-serif); font-size: 26px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; margin-bottom: 18px; font-weight: 600; }
+  .f-desc { font-family: var(--font-sans); font-size: 12px; color: var(--text-dim); line-height: 1.9; font-weight: 300; }
+  .f-col h4 { font-family: var(--font-sans); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 20px; }
+  .f-col ul { list-style: none; }
+  .f-col li { padding: 5px 0; }
+  .f-col a { font-family: var(--font-sans); font-size: 12px; color: var(--text-dim); text-decoration: none; transition: color 0.3s; cursor: pointer; font-weight: 300; }
+  .f-col a:hover { color: var(--gold); }
+  .footer-bottom { border-top: 1px solid var(--border); padding-top: 24px; display: flex; justify-content: space-between; font-family: var(--font-sans); font-size: 11px; color: var(--text-dim); }
+
+  @media (max-width: 1100px) {
+    .products-grid { grid-template-columns: repeat(3, 1fr); }
+    nav, .section, footer { padding-left: 28px; padding-right: 28px; }
+    .hero h1 { font-size: 56px; }
+  }
+  @media (max-width: 768px) {
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+    .hero h1 { font-size: 42px; }
+    .features-inner { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .checkout-grid { grid-template-columns: 1fr; }
+    .cart-panel { width: 100%; }
+    .modal-box { flex-direction: column; }
+    .modal-img { width: 100%; min-height: 220px; border-right: none; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo" onclick="showPage('home')">Time<span>Zone</span></div>
+  <ul class="nav-links">
+    <li><a class="active" onclick="nav(this,'home')">Home</a></li>
+    <li><a onclick="nav(this,'shop')">Collection</a></li>
+    <li><a onclick="filterAndGo('men')">Men</a></li>
+    <li><a onclick="filterAndGo('women')">Women</a></li>
+    <li><a onclick="filterAndGo('luxury')">Luxury</a></li>
+    <li><a onclick="filterAndGo('sport')">Sport</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-outline" onclick="openAuth('login')">Sign In</button>
+    <button class="btn-gold" onclick="openAuth('signup')">Register</button>
+    <button class="icon-btn" onclick="toggleCart()">
+      🛒<span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <div class="hero-rings">
+      <div class="hero-ring" style="width:700px;height:700px;"></div>
+      <div class="hero-ring" style="width:500px;height:500px;"></div>
+      <div class="hero-ring" style="width:300px;height:300px;"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Est. 2024 · Premium Timepieces</div>
+      <span class="hero-watch-icon">⌚</span>
+      <h1>Wear <em>Time</em><br>Like Never Before</h1>
+      <p class="hero-sub">Curated luxury watches from the world's finest ateliers</p>
+      <div class="hero-btns">
+        <button class="btn-hero-primary" onclick="nav(null,'shop')">Explore Collection</button>
+        <button class="btn-hero-secondary" onclick="openAuth('signup')">Become a Member</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">200+</span><span class="stat-label">Timepieces</span></div>
+        <div class="stat"><span class="stat-num">18</span><span class="stat-label">Luxury Brands</span></div>
+        <div class="stat"><span class="stat-num">50K+</span><span class="stat-label">Happy Clients</span></div>
+        <div class="stat"><span class="stat-num">5★</span><span class="stat-label">Rated Service</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="collection-tabs">
+    <div class="col-tab active" onclick="setColTab(this,'all')">
+      <div class="ct-icon">🏆</div><div class="ct-name">All Watches</div><div class="ct-count">20 pieces</div>
+    </div>
+    <div class="col-tab" onclick="setColTab(this,'luxury')">
+      <div class="ct-icon">💎</div><div class="ct-name">Luxury</div><div class="ct-count">6 pieces</div>
+    </div>
+    <div class="col-tab" onclick="setColTab(this,'sport')">
+      <div class="ct-icon">🌊</div><div class="ct-name">Sport</div><div class="ct-count">5 pieces</div>
+    </div>
+    <div class="col-tab" onclick="setColTab(this,'men')">
+      <div class="ct-icon">👔</div><div class="ct-name">Men</div><div class="ct-count">8 pieces</div>
+    </div>
+    <div class="col-tab" onclick="setColTab(this,'women')">
+      <div class="ct-icon">💍</div><div class="ct-name">Women</div><div class="ct-count">5 pieces</div>
+    </div>
+    <div class="col-tab" onclick="setColTab(this,'classic')">
+      <div class="ct-icon">⚙️</div><div class="ct-name">Classic</div><div class="ct-count">4 pieces</div>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-hd">
+      <div>
+        <p class="section-eyebrow">Featured Collection</p>
+        <h2 class="section-title">Signature Timepieces</h2>
+      </div>
+      <button class="btn-view-all" onclick="nav(null,'shop')">View All Collection →</button>
+    </div>
+    <div class="products-grid" id="home-grid"></div>
+  </section>
+
+  <section class="brand-strip">
+    <p>Authorized Dealer Of</p>
+    <div class="brands">
+      <span class="brand-name">Rolex</span>
+      <span class="brand-name">Omega</span>
+      <span class="brand-name">Patek Philippe</span>
+      <span class="brand-name">IWC</span>
+      <span class="brand-name">Tag Heuer</span>
+      <span class="brand-name">Longines</span>
+      <span class="brand-name">Breitling</span>
+      <span class="brand-name">Hublot</span>
+      <span class="brand-name">Cartier</span>
+    </div>
+  </section>
+
+  <section class="features-band">
+    <div class="features-inner">
+      <div class="feat"><div class="feat-icon">🚚</div><div class="feat-title">Free Shipping</div><div class="feat-desc">Complimentary worldwide shipping on all orders above ₹10,000</div></div>
+      <div class="feat"><div class="feat-icon">🔒</div><div class="feat-title">Secure Payment</div><div class="feat-desc">256-bit SSL encryption. Your data is always protected</div></div>
+      <div class="feat"><div class="feat-icon">✅</div><div class="feat-title">Authenticity</div><div class="feat-desc">Every piece ships with certificate of authenticity</div></div>
+      <div class="feat"><div class="feat-icon">↩️</div><div class="feat-title">30-Day Returns</div><div class="feat-desc">Not satisfied? Return within 30 days for a full refund</div></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="f-brand">TimeZone</div>
+        <p class="f-desc">Curating the world's finest timepieces since 2024. Every watch tells a story — we help you find yours.</p>
+      </div>
+      <div class="f-col"><h4>Collections</h4><ul>
+        <li><a onclick="filterAndGo('men')">Men's Watches</a></li>
+        <li><a onclick="filterAndGo('women')">Women's Watches</a></li>
+        <li><a onclick="filterAndGo('luxury')">Luxury Series</a></li>
+        <li><a onclick="filterAndGo('sport')">Sport Edition</a></li>
+        <li><a onclick="nav(null,'shop')">New Arrivals</a></li>
+      </ul></div>
+      <div class="f-col"><h4>Company</h4><ul>
+        <li><a>About Us</a></li><li><a>Our Story</a></li><li><a>Careers</a></li><li><a>Press</a></li><li><a>Contact</a></li>
+      </ul></div>
+      <div class="f-col"><h4>Support</h4><ul>
+        <li><a>Track Order</a></li><li><a>Returns</a></li><li><a>Size Guide</a></li><li><a>FAQ</a></li><li><a>Warranty</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 TimeZone. All rights reserved.</span>
+      <span>Privacy Policy · Terms of Service · Cookie Policy</span>
+    </div>
+  </footer>
+
+</div>
+
+<!-- SHOP PAGE -->
+<div class="page" id="page-shop">
+  <section class="section" style="padding-top: 52px;">
+    <div class="section-hd">
+      <div>
+        <p class="section-eyebrow">Browse</p>
+        <h2 class="section-title">Our Collection</h2>
+      </div>
+      <div class="shop-filters">
+        <select class="filter-select" id="catFilter" onchange="applyFilters()">
+          <option value="all">All Categories</option>
+          <option value="luxury">Luxury</option>
+          <option value="sport">Sport</option>
+          <option value="classic">Classic</option>
+          <option value="men">Men</option>
+          <option value="women">Women</option>
+        </select>
+        <select class="filter-select" id="sortFilter" onchange="applyFilters()">
+          <option value="default">Sort By</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="rating">Rating</option>
+          <option value="name">Name A–Z</option>
+        </select>
+        <span class="results-count" id="resultsCount">20 products</span>
+      </div>
+    </div>
+    <div class="products-grid" id="shop-grid"></div>
+  </section>
+</div>
+
+<!-- CHECKOUT PAGE -->
+<div class="page" id="page-checkout">
+  <div class="checkout-wrap">
+    <button class="checkout-back" onclick="showPage('shop')">← Back to Shop</button>
+    <div class="checkout-grid">
+      <div class="co-section">
+        <h2>Shipping Details</h2>
+        <div class="form-row-2" style="margin-bottom:14px;">
+          <div class="fg"><label>First Name</label><input type="text" placeholder="Aditya"></div>
+          <div class="fg"><label>Last Name</label><input type="text" placeholder="Dhingra"></div>
+        </div>
+        <div class="fg"><label>Email Address</label><input type="email" placeholder="aditya@example.com"></div>
+        <div class="fg"><label>Phone Number</label><input type="tel" placeholder="+91 98765 43210"></div>
+        <div class="fg"><label>Street Address</label><input type="text" placeholder="House No, Street Name, Area"></div>
+        <div class="form-row-2">
+          <div class="fg"><label>City</label><input type="text" placeholder="Ludhiana"></div>
+          <div class="fg"><label>PIN Code</label><input type="text" placeholder="141001"></div>
+        </div>
+        <div class="fg"><label>State</label><input type="text" placeholder="Punjab"></div>
+        <h2>Payment Details</h2>
+        <div class="fg"><label>Name on Card</label><input type="text" placeholder="Aditya Dhingra"></div>
+        <div class="fg"><label>Card Number</label><input type="text" placeholder="4242 4242 4242 4242" maxlength="19"></div>
+        <div class="form-row-2">
+          <div class="fg"><label>Expiry Date</label><input type="text" placeholder="MM / YY" maxlength="7"></div>
+          <div class="fg"><label>CVV</label><input type="text" placeholder="•••" maxlength="4"></div>
+        </div>
+        <button class="btn-checkout-main" onclick="placeOrder()" style="margin-top: 24px; width: 100%;">Place Order →</button>
+      </div>
+      <div class="order-box">
+        <h3>Order Summary</h3>
+        <div id="co-items"></div>
+        <div style="border-top: 1px solid var(--border); margin-top: 12px; padding-top: 4px;">
+          <div class="order-line"><span>Subtotal</span><span id="co-sub">₹0</span></div>
+          <div class="order-line"><span>Shipping</span><span style="color: #6dbe8c;">Free</span></div>
+          <div class="order-line"><span>GST (18%)</span><span id="co-tax">₹0</span></div>
+          <div class="order-total-line"><span>Total</span><span id="co-total">₹0</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="productModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <button class="m-close" onclick="closeModal()">✕</button>
+    <div class="modal-img" id="m-img">⌚</div>
+    <div class="modal-body">
+      <div class="m-brand" id="m-brand"></div>
+      <h2 class="m-name" id="m-name"></h2>
+      <div class="m-price" id="m-price"></div>
+      <span class="m-orig" id="m-orig" style="display:none"></span>
+      <p class="m-desc" id="m-desc"></p>
+      <div class="m-specs">
+        <div class="spec-row"><span class="spec-label">Movement</span><span class="spec-val" id="s-mov"></span></div>
+        <div class="spec-row"><span class="spec-label">Case Size</span><span class="spec-val" id="s-case"></span></div>
+        <div class="spec-row"><span class="spec-label">Case Material</span><span class="spec-val" id="s-mat"></span></div>
+        <div class="spec-row"><span class="spec-label">Water Resistance</span><span class="spec-val" id="s-water"></span></div>
+        <div class="spec-row"><span class="spec-label">Strap</span><span class="spec-val" id="s-strap"></span></div>
+        <div class="spec-row"><span class="spec-label">Warranty</span><span class="spec-val" id="s-warranty"></span></div>
+      </div>
+      <div class="m-actions">
+        <button class="btn-add" id="m-add-btn">+ Add to Cart</button>
+        <button class="btn-wish-modal" id="m-wish-btn" onclick="modalWish()">♡</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="auth-overlay" id="authModal" onclick="if(event.target===this)closeAuth()">
+  <div class="auth-box">
+    <button class="m-close" onclick="closeAuth()">✕</button>
+    <div class="auth-logo-txt">TimeZone</div>
+    <p class="auth-tagline">Your luxury watch destination</p>
+    <div class="auth-tabs">
+      <button class="a-tab active" id="t-login" onclick="switchTab('login')">Sign In</button>
+      <button class="a-tab" id="t-signup" onclick="switchTab('signup')">Register</button>
+    </div>
+    <div class="a-form active" id="f-login">
+      <div class="fg"><label>Email</label><input type="email" placeholder="your@email.com"></div>
+      <div class="fg"><label>Password</label><input type="password" placeholder="••••••••"></div>
+      <button class="btn-auth-submit" onclick="doLogin()">Sign In →</button>
+      <div class="auth-or"><span>or continue with</span></div>
+      <div class="auth-social-btns">
+        <button class="btn-social" onclick="doSocial()">G &nbsp;Google</button>
+        <button class="btn-social" onclick="doSocial()">f &nbsp;Facebook</button>
+      </div>
+    </div>
+    <div class="a-form" id="f-signup">
+      <div class="fg"><label>Full Name</label><input type="text" placeholder="Your Full Name"></div>
+      <div class="fg"><label>Email</label><input type="email" placeholder="your@email.com"></div>
+      <div class="fg"><label>Password</label><input type="password" placeholder="Create password"></div>
+      <div class="fg"><label>Confirm Password</label><input type="password" placeholder="Repeat password"></div>
+      <button class="btn-auth-submit" onclick="doSignup()">Create Account →</button>
+    </div>
+  </div>
+</div>
+
+<!-- CART PANEL -->
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-hd">
+    <h3>Shopping Cart</h3>
+    <button class="cart-x" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-body" id="cartBody"></div>
+  <div class="cart-ft" id="cartFt" style="display:none">
+    <div class="cart-row"><span>Subtotal</span><span id="c-sub">₹0</span></div>
+    <div class="cart-row"><span>Shipping</span><span style="color:#6dbe8c">Free</span></div>
+    <div class="cart-total-row"><span>Total</span><span id="c-total">₹0</span></div>
+    <button class="btn-checkout-main" onclick="goCheckout()">Proceed to Checkout →</button>
+    <button class="btn-continue" onclick="closeCart(); showPage('shop')">Continue Shopping</button>
+  </div>
+</div>
+
+<script>
+const PRODUCTS = [
+  { id:1,  name:'Submariner Date', brand:'ROLEX', price:285000, orig:320000, emoji:'⌚', badge:'sale', cat:['luxury','men'], rating:5, movement:'Perpetual 3235 Automatic', caseSize:'41mm', caseMat:'Oystersteel', water:'300m', strap:'Oyster Bracelet', warranty:'5 Years', desc:'The definitive luxury dive watch. Combining unmatched precision with iconic design, the Submariner Date is a legend in every sense — on land or underwater.' },
+  { id:2,  name:'Seamaster 300M', brand:'OMEGA', price:195000, orig:null, emoji:'🕐', badge:'new', cat:['sport','men'], rating:5, movement:'Co-Axial Master 8800', caseSize:'43mm', caseMat:'Stainless Steel', water:'600m', strap:'Rubber Band', warranty:'5 Years', desc:'Bond\'s watch of choice. The Seamaster 300M blends James Bond style with serious diving credentials. Built for the depths, worn with pride.' },
+  { id:3,  name:'Calatrava 5196', brand:'PATEK PHILIPPE', price:520000, orig:null, emoji:'🕰️', badge:null, cat:['luxury','men'], rating:5, movement:'Ultra-Thin Calibre 215', caseSize:'37mm', caseMat:'18k Rose Gold', water:'30m', strap:'Alligator Leather', warranty:'2 Years', desc:'The purist\'s watch. Understated perfection that transcends fashion. The Calatrava 5196 is a timeless heirloom — nothing extra, nothing missing.' },
+  { id:4,  name:'Pilot Chronograph', brand:'IWC', price:148000, orig:165000, emoji:'⏱️', badge:'sale', cat:['classic','men'], rating:4, movement:'Automatic Cal. 69385', caseSize:'44mm', caseMat:'Titanium', water:'60m', strap:'Canvas Strap', warranty:'4 Years', desc:'Born from aviation heritage, the IWC Pilot Chronograph delivers rugged precision for those who demand performance. A co-pilot you can trust.' },
+  { id:5,  name:'Aqua Terra 150M', brand:'OMEGA', price:225000, orig:null, emoji:'🕑', badge:'bestseller', cat:['sport','men'], rating:5, movement:'Co-Axial Master 8900', caseSize:'41mm', caseMat:'Stainless Steel', water:'150m', strap:'Steel Bracelet', warranty:'5 Years', desc:'Seamlessly transitioning between sea and shore. The Aqua Terra blends sporting spirit with refined sophistication for every occasion.' },
+  { id:6,  name:'Santos de Cartier', brand:'CARTIER', price:340000, orig:null, emoji:'🕒', badge:'new', cat:['luxury','men','women'], rating:5, movement:'Automatic 1847 MC', caseSize:'39mm', caseMat:'18k Yellow Gold', water:'100m', strap:'Integrated Bracelet', warranty:'2 Years', desc:'The original aviator\'s watch, reimagined. The Santos de Cartier carries a century of adventurous spirit in every precisely crafted detail.' },
+  { id:7,  name:'Carrera Heuer-02', brand:'TAG HEUER', price:92000, orig:110000, emoji:'⏲️', badge:'sale', cat:['sport','men'], rating:4, movement:'Automatic Heuer-02', caseSize:'42mm', caseMat:'Stainless Steel', water:'100m', strap:'Rubber Band', warranty:'2 Years', desc:'Born on the racetrack. The Carrera translates motorsport passion into an iconic chronograph. Every second counts — wear it like you mean it.' },
+  { id:8,  name:'Présence Elegance', brand:'LONGINES', price:68000, orig:null, emoji:'🕓', badge:'new', cat:['classic','women'], rating:4, movement:'Quartz L209', caseSize:'36mm', caseMat:'Stainless Steel', water:'30m', strap:'Satin Strap', warranty:'2 Years', desc:'Effortless grace for every occasion. The Longines Présence is a timeless companion for the discerning woman with impeccable taste.' },
+  { id:9,  name:'Big Bang Unico', brand:'HUBLOT', price:495000, orig:null, emoji:'🕔', badge:'limited', cat:['luxury','men'], rating:5, movement:'HUB1242 UNICO', caseSize:'45mm', caseMat:'King Gold', water:'100m', strap:'Rubber & Leather', warranty:'2 Years', desc:'The Art of Fusion. Hublot\'s Big Bang Unico pushes the boundaries of watchmaking with its revolutionary flyback chronograph movement.' },
+  { id:10, name:'Navitimer B01', brand:'BREITLING', price:312000, orig:360000, emoji:'🕕', badge:'sale', cat:['luxury','men'], rating:5, movement:'Breitling Manufacture B01', caseSize:'46mm', caseMat:'Stainless Steel', water:'30m', strap:'Pilot Bracelet', warranty:'3 Years', desc:'The ultimate pilot\'s instrument. The Navitimer\'s iconic slide rule bezel has guided aviators since 1952. A legend that still leads the sky.' },
+  { id:11, name:'Ballon Bleu 33mm', brand:'CARTIER', price:285000, orig:null, emoji:'🕖', badge:'new', cat:['luxury','women'], rating:5, movement:'Automatic 076', caseSize:'33mm', caseMat:'18k White Gold', water:'30m', strap:'Alligator Leather', warranty:'2 Years', desc:'Graceful and feminine. The Ballon Bleu\'s distinctive rounded case and blue sapphire crown make it one of the most beloved women\'s timepieces.' },
+  { id:12, name:'Superocean Heritage', brand:'BREITLING', price:178000, orig:null, emoji:'🕗', badge:null, cat:['sport','men'], rating:4, movement:'Automatic 17', caseSize:'44mm', caseMat:'Stainless Steel', water:'200m', strap:'Shark Mesh', warranty:'3 Years', desc:'Vintage soul, modern heart. The Superocean Heritage fuses 1950s diving nostalgia with cutting-edge Breitling reliability and performance.' },
+  { id:13, name:'Tissot Le Locle', brand:'TISSOT', price:42000, orig:48000, emoji:'🕘', badge:'sale', cat:['classic','men','women'], rating:4, movement:'ETA 2824-2 Automatic', caseSize:'39mm', caseMat:'Stainless Steel', water:'30m', strap:'Leather Strap', warranty:'2 Years', desc:'Swiss tradition at its finest. The Tissot Le Locle carries 170 years of watchmaking heritage into an affordable daily companion of rare elegance.' },
+  { id:14, name:'Rado True Thinline', brand:'RADO', price:55000, orig:null, emoji:'🕙', badge:'new', cat:['classic','women'], rating:4, movement:'Quartz ETA 955.112', caseSize:'25mm', caseMat:'High-Tech Ceramic', water:'30m', strap:'Ceramic Bracelet', warranty:'2 Years', desc:'Ultra-slim and avant-garde. Rado\'s True Thinline redefines minimalism in watchmaking with its razor-thin profile and scratch-resistant ceramic case.' },
+  { id:15, name:'Speedmaster Moonwatch', brand:'OMEGA', price:385000, orig:null, emoji:'🕚', badge:'bestseller', cat:['luxury','men'], rating:5, movement:'Co-Axial Master 3861', caseSize:'42mm', caseMat:'Stainless Steel', water:'50m', strap:'Steel Bracelet', warranty:'5 Years', desc:'The first watch worn on the Moon. The Speedmaster Moonwatch is not just a timepiece — it\'s a piece of human history strapped to your wrist.' },
+  { id:16, name:'Longines DolceVita', brand:'LONGINES', price:78000, orig:88000, emoji:'🕛', badge:'sale', cat:['classic','women'], rating:4, movement:'Quartz L209', caseSize:'23×37mm', caseMat:'Stainless Steel', water:'30m', strap:'Leather Strap', warranty:'2 Years', desc:'The sweet life on your wrist. DolceVita\'s rectangular case evokes the golden age of Italian elegance — sophisticated, refined, and utterly timeless.' },
+  { id:17, name:'Explorer II 216570', brand:'ROLEX', price:345000, orig:null, emoji:'⌚', badge:'new', cat:['luxury','men'], rating:5, movement:'Perpetual 3187 Automatic', caseSize:'42mm', caseMat:'Oystersteel', water:'100m', strap:'Oyster Bracelet', warranty:'5 Years', desc:'Born from the spirit of exploration. The Explorer II features an orange 24-hour hand and fixed bezel — perfect for caves, volcanoes, or the city.' },
+  { id:18, name:'TAG Monaco', brand:'TAG HEUER', price:125000, orig:140000, emoji:'⏱️', badge:'sale', cat:['luxury','men'], rating:4, movement:'Automatic Calibre 11', caseSize:'39mm', caseMat:'Stainless Steel', water:'30m', strap:'Leather Strap', warranty:'2 Years', desc:'The first square chronograph. Worn by Steve McQueen in Le Mans, the Monaco is arguably the most iconic motorsport watch ever made.' },
+  { id:19, name:'Tissot PRX Powermatic', brand:'TISSOT', price:38000, orig:null, emoji:'🕓', badge:'bestseller', cat:['classic','men','women'], rating:5, movement:'Powermatic 80 Automatic', caseSize:'40mm', caseMat:'Stainless Steel', water:'100m', strap:'Integrated Bracelet', warranty:'2 Years', desc:'Contemporary design meets 80-hour power reserve. The PRX Powermatic is a modern classic that punches far above its price point.' },
+  { id:20, name:'Rado Captain Cook', brand:'RADO', price:62000, orig:72000, emoji:'🕕', badge:'sale', cat:['sport','men'], rating:4, movement:'Automatic ETA 2824', caseSize:'42mm', caseMat:'High-Tech Ceramic', water:'300m', strap:'Rubber Band', warranty:'2 Years', desc:'A revival of the legendary 1962 diver. The Captain Cook\'s bold, adventurous spirit is captured in its striking ceramic case and vintage-inspired dial.' },
+];
+
+let cart = [];
+let currentPid = null;
+
+const $ = id => document.getElementById(id);
+const fmt = p => '₹' + p.toLocaleString('en-IN');
+
+function makeCard(p) {
+  const badgeMap = { sale:'<span class="badge badge-sale">Sale</span>', new:'<span class="badge badge-new">New</span>', limited:'<span class="badge badge-limited">Limited</span>', bestseller:'<span class="badge badge-bestseller">Bestseller</span>' };
+  return `<div class="product-card" onclick="openModal(${p.id})">
+    <div class="product-img-wrap">
+      ${p.badge ? badgeMap[p.badge] : ''}
+      <button class="wish-btn" onclick="event.stopPropagation();toggleWish(this)">♡</button>
+      <span class="product-emoji">${p.emoji}</span>
+      <div class="card-quick"><button onclick="event.stopPropagation();addToCart(${p.id})">+ Add to Cart</button></div>
+    </div>
+    <div class="product-body">
+      <div class="p-brand">${p.brand}</div>
+      <div class="p-name">${p.name}</div>
+      <div class="p-spec">${p.movement} · ${p.caseSize} · ${p.water}</div>
+      <div class="p-foot">
+        <div><span class="p-price">${fmt(p.price)}</span>${p.orig?`<span class="p-orig">${fmt(p.orig)}</span>`:''}</div>
+        <div class="stars">${'★'.repeat(p.rating)}${'☆'.repeat(5-p.rating)}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderGrid(list, id) {
+  $(id).innerHTML = list.map(makeCard).join('');
+  if(id==='shop-grid') $('resultsCount').textContent = list.length + ' products';
+}
+
+function openModal(id) {
+  const p = PRODUCTS.find(x=>x.id===id);
+  currentPid = id;
+  $('m-img').textContent = p.emoji;
+  $('m-brand').textContent = p.brand;
+  $('m-name').textContent = p.name;
+  $('m-price').textContent = fmt(p.price);
+  const origEl = $('m-orig');
+  if(p.orig){ origEl.textContent = fmt(p.orig); origEl.style.display='block'; } else { origEl.style.display='none'; }
+  $('m-desc').textContent = p.desc;
+  $('s-mov').textContent = p.movement;
+  $('s-case').textContent = p.caseSize;
+  $('s-mat').textContent = p.caseMat;
+  $('s-water').textContent = p.water;
+  $('s-strap').textContent = p.strap;
+  $('s-warranty').textContent = p.warranty;
+  $('m-add-btn').onclick = () => { addToCart(id); closeModal(); };
+  $('m-wish-btn').textContent = '♡';
+  $('productModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() { $('productModal').classList.remove('open'); document.body.style.overflow=''; }
+function modalWish() { const b=$('m-wish-btn'); b.textContent = b.textContent==='♡'?'♥':'♡'; }
+
+function addToCart(id) {
+  const p = PRODUCTS.find(x=>x.id===id);
+  const ex = cart.find(x=>x.id===id);
+  if(ex) ex.qty++; else cart.push({...p, qty:1});
+  renderCart(); showToast(p.name + ' added to cart');
+}
+function removeFromCart(id) { cart = cart.filter(x=>x.id!==id); renderCart(); }
+function changeQty(id, delta) {
+  const item = cart.find(x=>x.id===id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty <= 0) cart = cart.filter(x=>x.id!==id);
+  renderCart();
+}
+
+function renderCart() {
+  const count = cart.reduce((s,x)=>s+x.qty,0);
+  $('cartCount').textContent = count;
+  const total = cart.reduce((s,x)=>s+x.price*x.qty,0);
+  if(cart.length===0) {
+    $('cartBody').innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Your cart is empty.<br>Discover our collection.</p></div>';
+    $('cartFt').style.display='none';
+  } else {
+    $('cartBody').innerHTML = cart.map(item=>`
+      <div class="c-item">
+        <div class="c-item-img">${item.emoji}</div>
+        <div class="c-item-info">
+          <div class="c-item-name">${item.name}</div>
+          <div class="c-item-brand">${item.brand}</div>
+          <div class="c-item-qty-row">
+            <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+            <span class="c-item-price">${fmt(item.price*item.qty)}</span>
+          </div>
+        </div>
+        <button class="c-rm" onclick="removeFromCart(${item.id})">✕</button>
+      </div>`).join('');
+    $('c-sub').textContent = fmt(total);
+    $('c-total').textContent = fmt(total);
+    $('cartFt').style.display='block';
+  }
+}
+
+function toggleCart() { $('cartPanel').classList.toggle('open'); $('cartOverlay').classList.toggle('open'); }
+function closeCart() { $('cartPanel').classList.remove('open'); $('cartOverlay').classList.remove('open'); }
+function toggleWish(btn) { btn.classList.toggle('active'); btn.textContent = btn.classList.contains('active')?'♥':'♡'; }
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  $('page-'+name).classList.add('active');
+  if(name==='checkout') renderCheckout();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function nav(el, page) {
+  if(el) { document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active')); el.classList.add('active'); }
+  showPage(page);
+}
+function filterAndGo(cat) { showPage('shop'); $('catFilter').value=cat; applyFilters(); }
+function setColTab(el, cat) {
+  document.querySelectorAll('.col-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const list = cat==='all' ? PRODUCTS.slice(0,8) : PRODUCTS.filter(p=>p.cat.includes(cat)).slice(0,8);
+  renderGrid(list,'home-grid');
+}
+
+function applyFilters() {
+  const cat = $('catFilter').value;
+  const sort = $('sortFilter').value;
+  let list = cat==='all' ? [...PRODUCTS] : PRODUCTS.filter(p=>p.cat.includes(cat));
+  if(sort==='price-low') list.sort((a,b)=>a.price-b.price);
+  else if(sort==='price-high') list.sort((a,b)=>b.price-a.price);
+  else if(sort==='rating') list.sort((a,b)=>b.rating-a.rating);
+  else if(sort==='name') list.sort((a,b)=>a.name.localeCompare(b.name));
+  renderGrid(list,'shop-grid');
+}
+
+function goCheckout() { closeCart(); showPage('checkout'); }
+function renderCheckout() {
+  const total = cart.reduce((s,x)=>s+x.price*x.qty,0);
+  const tax = Math.round(total*0.18);
+  $('co-items').innerHTML = cart.map(item=>`<div class="order-line"><span>${item.name} x${item.qty}</span><span>${fmt(item.price*item.qty)}</span></div>`).join('');
+  $('co-sub').textContent = fmt(total);
+  $('co-tax').textContent = fmt(tax);
+  $('co-total').textContent = fmt(total+tax);
+}
+function placeOrder() { cart=[]; renderCart(); showToast('Order placed! Thank you for shopping at TimeZone.'); setTimeout(()=>showPage('home'),1800); }
+
+function openAuth(tab) { $('authModal').classList.add('open'); switchTab(tab); document.body.style.overflow='hidden'; }
+function closeAuth() { $('authModal').classList.remove('open'); document.body.style.overflow=''; }
+function switchTab(tab) {
+  document.querySelectorAll('.a-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.a-form').forEach(f=>f.classList.remove('active'));
+  $('t-'+tab).classList.add('active');
+  $('f-'+tab).classList.add('active');
+}
+function doLogin() { closeAuth(); showToast('Welcome back to TimeZone!'); }
+function doSignup() { closeAuth(); showToast('Account created! Welcome to TimeZone.'); }
+function doSocial() { closeAuth(); showToast('Signed in successfully!'); }
+
+let toastTimer;
+function showToast(msg) {
+  const t=$('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+renderGrid(PRODUCTS.slice(0,8),'home-grid');
+renderGrid(PRODUCTS,'shop-grid');
+renderCart();
+</script>
+</body>
+</html>
